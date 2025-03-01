@@ -539,7 +539,7 @@
                 </div>
               </div>
               
-              // Modified chart code to improve trendline visibility
+
               <div className="chart-container">
                 <ResponsiveContainer width="100%" height="100%">
                   <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 60 }}>
@@ -559,21 +559,21 @@
                     <Tooltip cursor={{ strokeDasharray: '3 3' }} />
                     <Legend />
                     <Scatter name="Data Points" data={historicalData} fill="#3b82f6" />
-                    {/* Enhanced trendline with more data points for better visibility */}
+                    
                     <Line
                       name="Trend Line"
-                      type="linear"  // Changed from monotone to linear
+                      type="linear"  
                       dataKey="y"
                       stroke="#f97316"
-                      strokeWidth={3}  // Thicker line
+                      strokeWidth={3}  
                       dot={false}
                       activeDot={false}
-                      isAnimationActive={false}  // Disable animation for stability
-                      connectNulls={true}  // Connect across null points
+                      isAnimationActive={false}  
+                      connectNulls={true}  
                       data={[
-                        /* Create multiple data points along the regression line for better visibility */
+                        
                         ...Array(10).fill().map((_, i) => {
-                          // Calculate evenly distributed x-values across the range
+                         
                           const minX = Math.min(...historicalData.map(d => d.x));
                           const maxX = Math.max(...historicalData.map(d => d.x));
                           const range = maxX - minX;
@@ -588,10 +588,10 @@
                       ]}
                     />
                     
-                    {/* Duplicate line with slightly different props as a fallback */}
+                   
                     <Line
                       name="Trend Line (alt)"
-                      legendType="none"  // Hide from legend
+                      legendType="none"  
                       type="linear"
                       dataKey="y"
                       stroke="#f97316"
