@@ -948,3 +948,5 @@ const SalesForecastingTool = () => {
 };
 
 export default SalesForecastingTool;
+// At the end of the file
+window.SalesForecastingTool = SalesForecastingTool;
