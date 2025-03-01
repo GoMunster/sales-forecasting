@@ -1,13 +1,13 @@
-// SalesForecastingTool.js
-// Use React and Recharts from global variables instead of imports
+// Start of SalesForecastingTool.js
+// Use global variables instead of import statements
 const { useState, useEffect } = React;
 const { LineChart, Line, ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = Recharts;
 
-const SalesForecastingTool = () => {
-  // Rest of your component code remains the same...
+// Add a console log to debug
+console.log("SalesForecastingTool script loaded");
 
 const SalesForecastingTool = () => {
-  // State for historical data input
+  console.log("SalesForecastingTool component started rendering");
   const [salesPeriod, setSalesPeriod] = useState("");
   const [xValue, setXValue] = useState("");
   const [yValue, setYValue] = useState("");
