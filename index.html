@@ -748,4 +748,149 @@
                             <td>{item.period}</td>
                             <td>{item.xValue}</td>
                             <td>
-                              <button
+                              <button 
+                                className="button danger-button"
+                                onClick={() => removeForecastPoint(index)}
+                              >
+                                Remove
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+              
+              <div className="button-container">
+                <button
+                  className="button success-button"
+                  onClick={generateForecasts}
+                  disabled={!futurePeriods.length}
+                >
+                  Generate Forecasts
+                </button>
+                <button
+                  className="button primary-button"
+                  onClick={exportToCSV}
+                  disabled={!(historicalData.length > 0 || forecasts.length > 0)}
+                >
+                  Export Data
+                </button>
+                <button
+                  className="button secondary-button"
+                  onClick={clearData}
+                >
+                  Clear All Data
+                </button>
+              </div>
+            </div>
+          )}
+          
+          {/* Display Forecasting Results */}
+          {showForecasts && forecasts.length > 0 && (
+            <div className="section fade-in">
+              <div className="section-header">
+                <div className="section-number">5</div>
+                <h2 className="section-title">Sales Forecasting Results</h2>
+              </div>
+              
+              <div className="overflow-x-auto mb-6">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Period</th>
+                      <th>Projected Leads</th>
+                      <th>Forecasted Sales</th>
+                      <th>Est. Ad Spend</th>
+                      <th>Est. CPA</th>
+                      <th>Conv. Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {forecasts.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.period}</td>
+                        <td>{item.x}</td>
+                        <td className="font-medium text-blue-700">{item.y.toFixed(2)}</td>
+                        <td>${item.adSpend.toFixed(2)}</td>
+                        <td>${item.cpa.toFixed(2)}</td>
+                        <td>{item.conversionRate.toFixed(2)}%</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              
+              <div className="chart-container">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart margin={{ top: 20, right: 20, bottom: 20, left: 50 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="period" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line 
+                      name="Forecasted Sales" 
+                      data={forecasts} 
+                      type="monotone" 
+                      dataKey="y" 
+                      stroke="#f97316" 
+                      strokeWidth={2}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+              
+              <div className="stats-grid mt-6">
+                <div className="stats-card blue-gradient">
+                  <h3 className="stats-label">Total Ad Spend (Forecasted)</h3>
+                  <p className="stats-value">${forecasts.reduce((sum, item) => sum + item.adSpend, 0).toFixed(2)}</p>
+                </div>
+                <div className="stats-card green-gradient">
+                  <h3 className="stats-label">Average Cost Per Lead</h3>
+                  <p className="stats-value">${(forecasts.reduce((sum, item) => sum + item.cpl, 0) / forecasts.length).toFixed(2)}</p>
+                </div>
+                <div className="stats-card purple-gradient">
+                  <h3 className="stats-label">Average Cost Per Acquisition</h3>
+                  <p className="stats-value">${(forecasts.reduce((sum, item) => sum + item.cpa, 0) / forecasts.length).toFixed(2)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* Footer with tips */}
+          <div className="section fade-in delay-3">
+            <div className="section-header">
+              <h2 className="section-title">Tips for Using This Tool</h2>
+            </div>
+            
+            <ul className="tips-list">
+              <li>Add at least 2 historical data points for basic analysis</li>
+              <li>More data points (6+) will give you more accurate predictions</li>
+              <li>Your data is saved in your browser - you won't lose it if you refresh</li>
+              <li>Export your data to CSV for further analysis in spreadsheet software</li>
+              <li>Clear all data if you want to start a new analysis</li>
+            </ul>
+          </div>
+        </div>
+      );
+    };
+
+    // Render the main component
+    try {
+      ReactDOM.render(
+        <SalesForecastingTool />,
+        document.getElementById('root')
+      );
+      document.querySelector('.loading').classList.add('hidden');
+    } catch (error) {
+      console.error("Error rendering main component:", error);
+      document.querySelector('.loading').classList.add('hidden');
+      document.querySelector('.error-message').classList.remove('hidden');
+      document.getElementById('error-details').textContent = error.message;
+    }
+  </script>
+</body>
+</html>
