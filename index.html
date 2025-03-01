@@ -540,86 +540,43 @@
               </div>
               
               // Modified chart code for the Regression Analysis section
+              // Modified chart code with minimal changes to maintain compatibility
 <div className="chart-container">
   <ResponsiveContainer width="100%" height="100%">
-    <ScatterChart margin={{ top: 20, right: 30, bottom: 60, left: 60 }}>
+    <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 60 }}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis 
         type="number" 
         dataKey="x" 
         name="Leads" 
-        label={{ 
-          value: 'Number of Leads (X)', 
-          position: 'insideBottom', 
-          offset: -10,
-          style: { textAnchor: 'middle', fill: '#666', fontWeight: 500 }
-        }}
-        domain={['dataMin - 10', 'dataMax + 10']}
+        label={{ value: 'Number of Leads (X)', position: 'bottom', offset: -5 }}
       />
       <YAxis 
         type="number" 
         dataKey="y" 
         name="Sales" 
-        label={{ 
-          value: 'Number of Sales (Y)', 
-          angle: -90, 
-          position: 'insideLeft',
-          style: { textAnchor: 'middle', fill: '#666', fontWeight: 500 }
-        }}
-        domain={['dataMin - 5', 'dataMax + 5']}
+        label={{ value: 'Number of Sales (Y)', angle: -90, position: 'left' }}
       />
-      <Tooltip 
-        cursor={{ strokeDasharray: '3 3' }}
-        formatter={(value, name) => [value, name === 'x' ? 'Leads' : 'Sales']}
-        labelFormatter={() => 'Data Point'}
-      />
-      <Legend verticalAlign="top" height={36} />
-      
-      {/* Scatter plot for historical data points */}
-      <Scatter 
-        name="Historical Data" 
-        data={historicalData} 
-        fill="#3b82f6" 
-        shape="circle"
-        legendType="circle"
-      />
-      
-      {/* Explicit trendline using Line component */}
+      <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+      <Legend />
+      <Scatter name="Data Points" data={historicalData} fill="#3b82f6" />
       <Line
         name="Trend Line"
-        type="linear"
+        type="monotone"
         dataKey="y"
         stroke="#f97316"
         strokeWidth={3}
         dot={false}
-        legendType="line"
         data={[
-          // Create more points for a smoother line
-          ...Array.from({ length: 10 }).map((_, index) => {
-            // Calculate a range that extends slightly beyond the data
-            const minX = Math.min(...historicalData.map(d => d.x)) * 0.9;
-            const maxX = Math.max(...historicalData.map(d => d.x)) * 1.1;
-            const step = (maxX - minX) / 9;
-            const x = minX + (step * index);
-            
-            return { 
-              x: x, 
-              y: regressionResult.slope * x + regressionResult.intercept 
-            };
-          })
+          { 
+            x: Math.min(...historicalData.map(d => d.x)), 
+            y: regressionResult.slope * Math.min(...historicalData.map(d => d.x)) + regressionResult.intercept 
+          },
+          { 
+            x: Math.max(...historicalData.map(d => d.x)), 
+            y: regressionResult.slope * Math.max(...historicalData.map(d => d.x)) + regressionResult.intercept 
+          }
         ]}
-      />
-      
-      {/* Add annotation for regression equation */}
-      <ReferenceLine
-        y={Math.max(...historicalData.map(d => d.y)) * 0.8}
-        stroke="none"
-        label={{
-          value: `y = ${regressionResult.slope.toFixed(2)}x + ${regressionResult.intercept.toFixed(2)}`,
-          fill: '#f97316',
-          fontSize: 14,
-          fontWeight: 'bold'
-        }}
       />
     </ScatterChart>
   </ResponsiveContainer>
