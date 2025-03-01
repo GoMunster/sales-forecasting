@@ -760,7 +760,13 @@
                 >
                   Generate Forecasts
                 </button>
-                
+                <button
+                  className="button primary-button"
+                  onClick={exportToCSV}
+                  disabled={!(historicalData.length > 0 || forecasts.length > 0)}
+                >
+                  Export Data
+                </button>
                 <button
                   className="button secondary-button"
                   onClick={clearData}
@@ -858,14 +864,6 @@
             </ul>
           </div>
         </div>
-        <div className="button-container">
-        <button
-                  className="button primary-button"
-                  onClick={exportToCSV}
-                  disabled={!(historicalData.length > 0 || forecasts.length > 0)}
-                >
-                  Export Data
-                </button></div>
       );
     };
 
