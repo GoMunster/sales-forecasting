@@ -4,19 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sales Forecasting Tool</title>
+  
+  <!-- Font and Styling -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
   <link rel="stylesheet" href="styles.css">
-  
-  <!-- React and ReactDOM from cdnjs (more reliable) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js" integrity="sha512-TS4lzp3EVDrSXPXMmJbVVRS7yLL9uB9pgzi0aLDvfJrHHITq2DBqCYLi1Ke1OxL2HYLEkRjZQGivqgtJHHQ+9A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js" integrity="sha512-9jGNr5Piwe8nzLLYTk8QrEMPfjGU0px80GYzKZUxi7lmCfrBjtyCc1V5kkS5vxVwwIB7Qpzdc7Z7QOtU/Yvhg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  
-  <!-- Recharts from jsdelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/recharts@2.1.12/umd/Recharts.min.js"></script>
-  
-  <!-- Babel standalone -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js" integrity="sha512-kp7YHLxuJDJcOzStgd6vtpxr4ZU9kjn77e6dBsivSz+pUuAuMlE2UTdKB7jjsWT84qbS8kdCWHPETnP/ctrFsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   
   <style>
     .loading, .error-message {
@@ -51,10 +43,16 @@
     </div>
   </div>
 
-  <!-- Load application after libraries -->
+  <!-- Load libraries in this specific order -->
+  <script crossorigin src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script>
+  <script crossorigin src="https://unpkg.com/prop-types@15.7.2/prop-types.min.js"></script>
+  <script crossorigin src="https://unpkg.com/recharts@2.1.12/umd/Recharts.js"></script>
+  <script crossorigin src="https://unpkg.com/@babel/standalone@7.15.6/babel.min.js"></script>
+
+  <!-- Error detection -->
   <script>
-    // Check if libraries loaded correctly
-    window.addEventListener('DOMContentLoaded', function() {
+    window.addEventListener('load', function() {
       setTimeout(function() {
         if (!window.React || !window.ReactDOM || !window.Recharts) {
           document.querySelector('.loading').classList.add('hidden');
@@ -66,44 +64,33 @@
           if (!window.Recharts) missingLibs.push('Recharts');
           
           document.getElementById('error-details').textContent = 
-            'Failed to load required libraries: ' + missingLibs.join(', ') + 
-            '. Please check the browser console for more details.';
+            'Failed to load required libraries: ' + missingLibs.join(', ');
           
           console.error('Missing libraries:', missingLibs);
         }
-      }, 2000);
+      }, 3000);
     });
-
-    window.onerror = function(message, source, lineno, colno, error) {
-      document.querySelector('.loading').classList.add('hidden');
-      document.querySelector('.error-message').classList.remove('hidden');
-      document.getElementById('error-details').textContent = message;
-      console.error('Error:', message, source, lineno, colno, error);
-      return false;
-    };
   </script>
 
-  <!-- Load our application code -->
+  <!-- Load and run our app code -->
   <script type="text/babel" src="SalesForecastingTool.js"></script>
   <script type="text/babel">
-    // Configure Babel to use React 17
     window.addEventListener('load', function() {
-      if (window.React && window.ReactDOM && window.Recharts) {
-        try {
-          console.log('Libraries loaded successfully, rendering app...');
+      try {
+        if (window.React && window.ReactDOM && window.Recharts) {
           ReactDOM.render(
-            <div className="App bg-gradient-to-b from-blue-50 to-indigo-100 min-h-screen py-8">
+            <div className="App">
               <SalesForecastingTool />
             </div>,
             document.getElementById('root')
           );
           document.querySelector('.loading').classList.add('hidden');
-        } catch (error) {
-          console.error('Error rendering application:', error);
-          document.querySelector('.loading').classList.add('hidden');
-          document.querySelector('.error-message').classList.remove('hidden');
-          document.getElementById('error-details').textContent = error.message;
         }
+      } catch (error) {
+        console.error('Error rendering application:', error);
+        document.querySelector('.loading').classList.add('hidden');
+        document.querySelector('.error-message').classList.remove('hidden');
+        document.getElementById('error-details').textContent = error.message;
       }
     });
   </script>
