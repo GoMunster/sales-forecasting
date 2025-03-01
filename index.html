@@ -279,7 +279,50 @@
         return historicalData.reduce((sum, item) => sum + item.conversionRate, 0) / historicalData.length;
       };
 
-      
+      // Export data to CSV
+      const exportToCSV = () => {
+        // Combine historical and forecast data
+        const exportData = [
+          // Header row
+          ['Period', 'Leads', 'Sales', 'Ad Spend', 'Cost Per Lead', 'Cost Per Sale', 'Conversion Rate', 'Type'],
+          // Historical data
+          ...historicalData.map(item => [
+            item.period,
+            item.x,
+            item.y,
+            item.adSpend,
+            item.cpl,
+            item.cpa,
+            item.conversionRate,
+            'Historical'
+          ]),
+          // Forecast data
+          ...forecasts.map(item => [
+            item.period,
+            item.x,
+            item.y,
+            item.adSpend,
+            item.cpl,
+            item.cpa,
+            item.conversionRate,
+            'Forecast'
+          ])
+        ];
+        
+        // Convert to CSV
+        const csvContent = exportData.map(row => row.join(',')).join('\n');
+        
+        // Create download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'sales_forecast.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
 
       // Clear all data
       const clearData = () => {
@@ -717,13 +760,7 @@
                 >
                   Generate Forecasts
                 </button>
-                <button
-                  className="button primary-button"
-                  onClick={exportToCSV}
-                  disabled={!(historicalData.length > 0 || forecasts.length > 0)}
-                >
-                  Export Data
-                </button>
+                
                 <button
                   className="button secondary-button"
                   onClick={clearData}
@@ -821,53 +858,19 @@
             </ul>
           </div>
         </div>
+        <div className="button-container">
+        <button
+                  className="button primary-button"
+                  onClick={exportToCSV}
+                  disabled={!(historicalData.length > 0 || forecasts.length > 0)}
+                >
+                  Export Data
+                </button>
       );
+      </div>
     };
 
-    // Export data to CSV
-      const exportToCSV = () => {
-        // Combine historical and forecast data
-        const exportData = [
-          // Header row
-          ['Period', 'Leads', 'Sales', 'Ad Spend', 'Cost Per Lead', 'Cost Per Sale', 'Conversion Rate', 'Type'],
-          // Historical data
-          ...historicalData.map(item => [
-            item.period,
-            item.x,
-            item.y,
-            item.adSpend,
-            item.cpl,
-            item.cpa,
-            item.conversionRate,
-            'Historical'
-          ]),
-          // Forecast data
-          ...forecasts.map(item => [
-            item.period,
-            item.x,
-            item.y,
-            item.adSpend,
-            item.cpl,
-            item.cpa,
-            item.conversionRate,
-            'Forecast'
-          ])
-        ];
-        
-        // Convert to CSV
-        const csvContent = exportData.map(row => row.join(',')).join('\n');
-        
-        // Create download link
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('download', 'sales_forecast.csv');
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
+    
 
     // Render the main component
     try {
