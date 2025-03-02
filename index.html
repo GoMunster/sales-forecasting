@@ -817,19 +817,6 @@
                 >
                   Generate Forecasts
                 </button>
-                <button
-                  className="button primary-button"
-                  onClick={exportToCSV}
-                  disabled={!(historicalData.length > 0 || forecasts.length > 0)}
-                >
-                  Export Data
-                </button>
-                <button
-                  className="button secondary-button"
-                  onClick={clearData}
-                >
-                  Clear All Data
-                </button>
               </div>
             </div>
           )}
@@ -919,24 +906,3 @@
               <li>Export your data to CSV for further analysis in spreadsheet software</li>
               <li>Clear all data if you want to start a new analysis</li>
             </ul>
-          </div>
-        </div>
-      );
-    };
-
-    // Render the main component
-    try {
-      ReactDOM.render(
-        <SalesForecastingTool />,
-        document.getElementById('root')
-      );
-      document.querySelector('.loading').classList.add('hidden');
-    } catch (error) {
-      console.error("Error rendering main component:", error);
-      document.querySelector('.loading').classList.add('hidden');
-      document.querySelector('.error-message').classList.remove('hidden');
-      document.getElementById('error-details').textContent = error.message;
-    }
-  </script>
-</body>
-</html>
