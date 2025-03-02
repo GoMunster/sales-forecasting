@@ -540,41 +540,69 @@
               </div>
               
 
+                           
               <div className="chart-container">
                 <ResponsiveContainer width="100%" height="100%">
-                  <ScatterChart margin={{ top: 20, right: 20, bottom: 40, left: 60 }}>
+                  <ScatterChart margin={{ top: 20, right: 30, bottom: 60, left: 70 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       type="number" 
                       dataKey="x" 
                       name="Leads" 
-                      label={{ value: 'Number of Leads (X)', position: 'bottom', offset: -5 }}
+                      label={{ 
+                        value: 'Number of Leads (X)', 
+                        position: 'insideBottomRight', 
+                        offset: -35,
+                        style: { textAnchor: 'end', fill: '#666', fontWeight: 500 }
+                      }}
+                      padding={{ left: 30, right: 30 }}
                     />
                     <YAxis 
                       type="number" 
                       dataKey="y" 
                       name="Sales" 
-                      label={{ value: 'Number of Sales (Y)', angle: -90, position: 'left' }}
+                      label={{ 
+                        value: 'Number of Sales (Y)', 
+                        angle: -90, 
+                        position: 'insideLeft',
+                        style: { textAnchor: 'middle', fill: '#666', fontWeight: 500 },
+                        offset: -50
+                      }}
+                      padding={{ top: 20, bottom: 20 }}
                     />
-                    <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                    <Legend />
+                    <Tooltip 
+                      cursor={{ strokeDasharray: '3 3' }}
+                      formatter={(value, name) => [value, name === 'x' ? 'Leads' : 'Sales']}
+                      labelFormatter={() => 'Data Point'}
+                    />
                     
                     
-                    <Scatter name="Data Points" data={historicalData} fill="#3b82f6" />
+                    <Legend 
+                      verticalAlign="bottom" 
+                      height={36} 
+                      wrapperStyle={{ paddingTop: '10px' }}
+                    />
                     
                    
+                    <Scatter 
+                      name="Data Points" 
+                      data={historicalData} 
+                      fill="#3b82f6" 
+                    />
+                    
+                    
                     <Scatter
                       name="Trend Line"
                       line={{ stroke: '#f97316', strokeWidth: 3 }}
                       lineType="fitting"
                       data={[
                         { 
-                          x: Math.min(...historicalData.map(d => d.x)) - 5, 
-                          y: regressionResult.slope * (Math.min(...historicalData.map(d => d.x)) - 5) + regressionResult.intercept 
+                          x: Math.min(...historicalData.map(d => d.x)) - 10, 
+                          y: regressionResult.slope * (Math.min(...historicalData.map(d => d.x)) - 10) + regressionResult.intercept 
                         },
                         { 
-                          x: Math.max(...historicalData.map(d => d.x)) + 5, 
-                          y: regressionResult.slope * (Math.max(...historicalData.map(d => d.x)) + 5) + regressionResult.intercept 
+                          x: Math.max(...historicalData.map(d => d.x)) + 10, 
+                          y: regressionResult.slope * (Math.max(...historicalData.map(d => d.x)) + 10) + regressionResult.intercept 
                         }
                       ]}
                       fill="none"
