@@ -828,6 +828,24 @@
                   Export Data
                 </button>
                 <button
+                  className="button warning-button"
+                  onClick={() => {
+                    // Clear only forecast data
+                    setFuturePeriods([]);
+                    setForecasts([]);
+                    setShowForecasts(false);
+                    
+                    // Clear localStorage for forecast data
+                    localStorage.removeItem('futurePeriods');
+                    
+                    // Reset UI state for future periods input
+                    setSalesPeriod('');
+                    setXValue('');
+                  }}
+                >
+                  Reset Forecast Only
+                </button>
+                <button
                   className="button secondary-button"
                   onClick={clearData}
                 >
@@ -838,6 +856,28 @@
           )}
           
           {/* Display Forecasting Results */}
+
+            <div className="button-container mt-4">
+              <button
+                className="button secondary-button"
+                onClick={() => {
+                  // Clear only the forecast-related data
+                  setFuturePeriods([]);
+                  setForecasts([]);
+                  setShowForecasts(false);
+                  
+                  // Clear localStorage for forecast data
+                  localStorage.removeItem('futurePeriods');
+                  
+                  // Reset UI state for future periods input
+                  setSalesPeriod('');
+                  setXValue('');
+                }}
+              >
+                Reset Forecast Data
+              </button>
+            </div>
+          
           {showForecasts && forecasts.length > 0 && (
             <div className="section fade-in">
               <div className="section-header">
